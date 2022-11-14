@@ -12,6 +12,11 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "LINUX")
 	target_compile_options(plugin_example PRIVATE "-fPIC")
 endif()
 
+# install_name_tool breaks the code signature on macOS
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+	set(CMAKE_XCODE_ATTRIBUTE_OTHER_CODE_SIGN_FLAGS "-o linker-signed")
+endif()
+
 # Add vendored API dependency if enabled
 option(BN_VENDOR_API "Use the Binary Ninja API submodule" ON)
 if(BN_VENDOR_API)
